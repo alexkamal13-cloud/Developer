@@ -113,8 +113,6 @@ Throughout this project, I strengthened several important SQL and data analysis 
 
 ## Conclusion
 
-## Conclusion
-
 This project helped me develop stronger SQL skills by working through real-world business questions and analyzing a large job posting dataset. Beyond learning more advanced SQL concepts such as joins, CTEs, aggregations, and filtering, it also strengthened my data analysis and critical thinking skills by forcing me to interpret results rather than simply generate them.
 
 One of the most interesting takeaways was recognizing that the highest-paying skills are not always the most valuable skills. While specialized technologies such as PySpark and Snowflake were associated with higher salaries, SQL consistently appeared as the most in-demand skill across the job market. This highlighted the importance of looking beyond a single metric and considering both demand and salary when evaluating career opportunities.
