@@ -39,9 +39,71 @@ The dataset used in this project comes from Luke Barousse's SQL Data Analytics c
 
 This analysis identified the highest-paying data analyst positions by filtering for data analyst roles with reported salaries and ranking them by annual compensation.
 
+```sql
+SELECT
+    job_id,
+    job_title,
+    job_location,
+    job_schedule_type,
+    salary_year_avg,
+    job_posted_date,
+    name AS company_name
+FROM
+    job_postings_fact
+LEFT JOIN company_dim
+    ON job_postings_fact.company_id = company_dim.company_id
+WHERE
+    job_title_short = 'Data Analyst'
+    AND job_location = 'Anywhere'
+    AND salary_year_avg IS NOT NULL
+ORDER BY
+    salary_year_avg DESC
+LIMIT 10;
+```
+![Top Paying Roles](ProjectSQL/Assets/top_paying_data_analyst_jobs.png)
+
+
+
+
+
+
 ### 2. Skills Required for Top-Paying Jobs
 
 By joining job posting data with skill requirements, I identified which technical skills are most commonly associated with the highest-paying analyst positions.
+
+```sql
+WITH top_paying_jobs AS (
+    SELECT
+        job_id,
+        job_title,
+        salary_year_avg,
+        name AS company_name
+    FROM job_postings_fact
+    LEFT JOIN company_dim
+        ON job_postings_fact.company_id = company_dim.company_id
+    WHERE
+        job_title_short = 'Data Analyst'
+        AND job_location = 'Anywhere'
+        AND salary_year_avg IS NOT NULL
+    ORDER BY
+        salary_year_avg DESC
+    LIMIT 10
+)
+
+SELECT
+    skills,
+    COUNT(skills) AS skill_count
+FROM top_paying_jobs
+INNER JOIN skills_job_dim
+    ON top_paying_jobs.job_id = skills_job_dim.job_id
+INNER JOIN skills_dim
+    ON skills_job_dim.skill_id = skills_dim.skill_id
+GROUP BY
+    skills
+ORDER BY
+    skill_count DESC;
+```
+![Skills Required For Top Paying Data Analysts Roles](ProjectSQL/Assets/top_paying_job_skills.png)
 
 ### 3. Most In-Demand Skills
 
@@ -113,9 +175,4 @@ Throughout this project, I strengthened several important SQL and data analysis 
 
 ## Conclusion
 
-This project helped me develop stronger SQL skills by working through real-world business questions and analyzing a large job posting dataset. Beyond learning more advanced SQL concepts such as joins, CTEs, aggregations, and filtering, it also strengthened my data analysis and critical thinking skills by forcing me to interpret results rather than simply generate them.
-
-One of the most interesting takeaways was recognizing that the highest-paying skills are not always the most valuable skills. While specialized technologies such as PySpark and Snowflake were associated with higher salaries, SQL consistently appeared as the most in-demand skill across the job market. This highlighted the importance of looking beyond a single metric and considering both demand and salary when evaluating career opportunities.
-
-Overall, this project provided valuable insight into the data analyst job market while giving me hands-on experience using SQL to transform raw data into meaningful business insights.
-
+This project helped me develop stronger SQL skills while gaining valuable insight into the data analyst job market. By analyzing salary trends, skill demand, and job requirements, I was able to better understand which skills provide the greatest career value. The findings from this project can serve as a guide for aspiring data analysts looking to prioritize skill development and career growth.
